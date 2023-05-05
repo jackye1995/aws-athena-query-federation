@@ -16,3 +16,4 @@
 */.jqwik-database
 *.iml
 dependency-reduced-pom.xml
+samconfig.toml

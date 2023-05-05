@@ -73,6 +73,7 @@ Resources:
     Properties:
       Name: !Ref AthenaCatalogName
       Type: LAMBDA
+      Description: "Athena federated connector for Iceberg REST catalog"
       Parameters:
         function: !GetAtt LambdaIcebergRestMetadataHandler.Arn
   LambdaIcebergRestMetadataHandler:
