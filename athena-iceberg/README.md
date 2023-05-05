@@ -11,14 +11,14 @@ To build, first run at the parent directory:
 Or if you have built the whole project before, just run inside this directory:
 
 ```shell
-../mvnw install -DskipTests -pl :athena-iceberg-rest
+../mvnw install -DskipTests -pl :athena-iceberg
 ```
 
 To deploy, you need SAM. If it is not available install it [here](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html).
 Then run:
 
 ```shell
-sam package --s3-bucket yzhaoqin-iceberg-eu-west-1 --region eu-west-1
+sam package --s3-bucket <sam-deploy-artifact-bucket-name> --region <region-name>
 sam deploy --guided
 ```
 
