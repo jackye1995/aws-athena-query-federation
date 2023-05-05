@@ -1,0 +1,100 @@
+Transform: 'AWS::Serverless-2016-10-31'
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: IcebergRestAthenaConnector
+    Description: Connect to an Iceberg REST catalog to read and write data
+    Author: 'Jack Ye'
+    SpdxLicenseId: Apache-2.0
+    LicenseUrl: LICENSE.txt
+    ReadmeUrl: README.md
+    Labels: ['athena-federation', 'iceberg']
+    HomePageUrl: https://github.com/awslabs/aws-athena-query-federation
+    SemanticVersion: 2022.47.1
+    SourceCodeUrl: https://github.com/awslabs/aws-athena-query-federation
+
+# Parameters are CloudFormation features to pass input
+# to your template when you create a stack
+Parameters:
+  S3BucketNamePrefix:
+    Description: "S3 bucket to host Athena query results, the prefix will be appended aws account ID and region"
+    Default: "athena-iceberg-rest-results"
+    Type: String
+  AthenaWorkGroupName:
+    Description: "The name of the work group that will be created in Athena"
+    Default: "iceberg"
+    Type: String
+  AthenaCatalogName:
+    Description: "The name of the catalog that will be created in Athena"
+    Default: "athena_iceberg_rest"
+    Type: String
+  LambdaTimeout:
+    Description: "Maximum Lambda invocation runtime in seconds. (min 1 - 900 max)"
+    Default: 900
+    Type: Number
+  LambdaMemory:
+    Description: "Lambda memory in MB (min 128 - 10240 max)."
+    Default: 1024
+    Type: Number
+  IcebergRestEndpoint:
+    Description: "Endpoint of the Iceberg REST catalog"
+    Default: "https://api.tabular.io/ws"
+    Type: String
+  IcebergRestWarehouse:
+    Description: "Warehouse identifier of the Iceberg REST catalog"
+    Default: "sandbox"
+    Type: String
+  IcebergRestCredential:
+    Description: "Credential to access REST catalog"
+    Type: String
+  IcebergRestHeaders:
+    Description: "Headers to be added to REST catalog, in format of key1=value1,key2=value2"
+    Type: String
+    Default: "header.x-tabular-s3-access=vended_credentials"
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${S3BucketNamePrefix}-${AWS::AccountId}-${AWS::Region}"
+  AthenaWorkgroup:
+    Type: AWS::Athena::WorkGroup
+    Properties:
+      Name: !Ref AthenaWorkGroupName
+      Description: "Athena SQL work group for Iceberg REST catalog"
+      WorkGroupConfiguration:
+        EngineVersion:
+          EffectiveEngineVersion: "Athena engine version 3"
+          SelectedEngineVersion: "Athena engine version 3"
+        ResultConfiguration:
+          OutputLocation: !Sub "s3://${S3BucketNamePrefix}-${AWS::AccountId}-${AWS::Region}/"
+  AthenaIcebergCatalog:
+    Type: AWS::Athena::DataCatalog
+    Properties:
+      Name: !Ref AthenaCatalogName
+      Type: LAMBDA
+      Parameters:
+        function: !GetAtt LambdaIcebergRestMetadataHandler.Arn
+  LambdaIcebergRestMetadataHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      Environment:
+        Variables:
+          iceberg_rest_uri: !Ref IcebergRestEndpoint
+          iceberg_rest_warehouse: !Ref IcebergRestWarehouse
+          iceberg_rest_credential: !Ref IcebergRestCredential
+          iceberg_rest_headers: !Ref IcebergRestHeaders
+      FunctionName: IcebergRestMetadataHandler
+      Handler: "com.amazonaws.athena.connectors.iceberg.IcebergRestMetadataHandler"
+      CodeUri: "./target/athena-iceberg-2022.47.1.jar"
+      Description: "Connect to an Iceberg REST catalog to retrieve metadata"
+      Runtime: java11
+      Timeout: !Ref LambdaTimeout
+      MemorySize: !Ref LambdaMemory
+      Policies: # example policy, not used
+        - Statement:
+            - Action:
+                - athena:GetQueryExecution
+              Effect: Allow
+              Resource: '*'
+          Version: '2012-10-17'

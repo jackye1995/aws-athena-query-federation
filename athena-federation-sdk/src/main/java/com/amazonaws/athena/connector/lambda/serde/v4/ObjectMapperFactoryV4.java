@@ -233,6 +233,7 @@ public class ObjectMapperFactoryV4
         ReadRecordsRequestSerDe.Serializer readRecords = new ReadRecordsRequestSerDe.Serializer(identity, tableName, constraints, schema, split);
         UserDefinedFunctionRequestSerDe.Serializer userDefinedFunction = new UserDefinedFunctionRequestSerDe.Serializer(identity, block, schema);
         GetDataSourceCapabilitiesRequestSerDeV4.Serializer getDataSourceCapabilities = new GetDataSourceCapabilitiesRequestSerDeV4.Serializer(identity);
+        GetDataSourceConfigsRequestSerDeV4.Serializer getDataSourceConfigs = new GetDataSourceConfigsRequestSerDeV4.Serializer(identity);
         return new FederationRequestSerDeV4.Serializer(
                 ping,
                 listSchemas,
@@ -242,7 +243,8 @@ public class ObjectMapperFactoryV4
                 getSplits,
                 readRecords,
                 userDefinedFunction,
-                getDataSourceCapabilities);
+                getDataSourceCapabilities,
+                getDataSourceConfigs);
     }
 
     private static FederationRequestSerDeV4.Deserializer createRequestDeserializer(BlockAllocator allocator)
@@ -282,6 +284,7 @@ public class ObjectMapperFactoryV4
         ReadRecordsRequestSerDe.Deserializer readRecords = new ReadRecordsRequestSerDe.Deserializer(identity, tableName, constraints, schema, split);
         UserDefinedFunctionRequestSerDe.Deserializer userDefinedFunction = new UserDefinedFunctionRequestSerDe.Deserializer(identity, block, schema);
         GetDataSourceCapabilitiesRequestSerDeV4.Deserializer getDataSourceCapabilities = new GetDataSourceCapabilitiesRequestSerDeV4.Deserializer(identity);
+        GetDataSourceConfigsRequestSerDeV4.Deserializer getDataSourceConfigs = new GetDataSourceConfigsRequestSerDeV4.Deserializer(identity);
 
         return new FederationRequestSerDeV4.Deserializer(
                 ping,
@@ -292,7 +295,8 @@ public class ObjectMapperFactoryV4
                 getSplits,
                 readRecords,
                 userDefinedFunction,
-                getDataSourceCapabilities);
+                getDataSourceCapabilities,
+                getDataSourceConfigs);
     }
 
     private static FederationResponseSerDeV4.Serializer createResponseSerializer()
@@ -316,6 +320,7 @@ public class ObjectMapperFactoryV4
         UserDefinedFunctionResponseSerDe.Serializer userDefinedFunction = new UserDefinedFunctionResponseSerDe.Serializer(block);
         VersionedSerDe.Serializer<OptimizationSubType> optimizationSubtype = new OptimizationSubTypeSerDeV4.Serializer();
         GetDataSourceCapabilitiesResponseSerDeV4.Serializer getDataSourceCapabilities = new GetDataSourceCapabilitiesResponseSerDeV4.Serializer(optimizationSubtype);
+        GetDataSourceConfigsResponseSerDeV4.Serializer getDataSourceConfigs = new GetDataSourceConfigsResponseSerDeV4.Serializer();
 
         return new FederationResponseSerDeV4.Serializer(
                 ping,
@@ -327,7 +332,8 @@ public class ObjectMapperFactoryV4
                 readRecords,
                 remoteReadRecords,
                 userDefinedFunction,
-                getDataSourceCapabilities);
+                getDataSourceCapabilities,
+                getDataSourceConfigs);
     }
 
     private static FederationResponseSerDeV4.Deserializer createResponseDeserializer(BlockAllocator allocator)
@@ -351,6 +357,7 @@ public class ObjectMapperFactoryV4
         UserDefinedFunctionResponseSerDe.Deserializer userDefinedFunction = new UserDefinedFunctionResponseSerDe.Deserializer(block);
         VersionedSerDe.Deserializer<OptimizationSubType> optimizationSubtype = new OptimizationSubTypeSerDeV4.Deserializer();
         GetDataSourceCapabilitiesResponseSerDeV4.Deserializer getDataSourceCapabilities = new GetDataSourceCapabilitiesResponseSerDeV4.Deserializer(optimizationSubtype);
+        GetDataSourceConfigsResponseSerDeV4.Deserializer getDataSourceConfigs = new GetDataSourceConfigsResponseSerDeV4.Deserializer();
 
         return new FederationResponseSerDeV4.Deserializer(
                 ping,
@@ -362,6 +369,7 @@ public class ObjectMapperFactoryV4
                 readRecords,
                 remoteReadRecords,
                 userDefinedFunction,
-                getDataSourceCapabilities);
+                getDataSourceCapabilities,
+                getDataSourceConfigs);
     }
 }

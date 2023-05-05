@@ -20,6 +20,7 @@ package com.amazonaws.athena.connector.lambda.request;
  * #L%
  */
 
+import com.amazonaws.athena.connector.lambda.metadata.GetDataSourceConfigsResponse;
 import com.amazonaws.athena.connector.lambda.metadata.GetSplitsResponse;
 import com.amazonaws.athena.connector.lambda.metadata.GetTableLayoutResponse;
 import com.amazonaws.athena.connector.lambda.metadata.GetTableResponse;
@@ -46,7 +47,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = ReadRecordsResponse.class, name = "ReadRecordsResponse"),
         @JsonSubTypes.Type(value = RemoteReadRecordsResponse.class, name = "RemoteReadRecordsResponse"),
         @JsonSubTypes.Type(value = UserDefinedFunctionResponse.class, name = "UserDefinedFunctionResponse"),
-        @JsonSubTypes.Type(value = PingResponse.class, name = "PingResponse")
+        @JsonSubTypes.Type(value = PingResponse.class, name = "PingResponse"),
+        @JsonSubTypes.Type(value = GetDataSourceConfigsResponse.class, name = "GetDataSourceConfigsResponse")
 })
 public abstract class FederationResponse implements AutoCloseable
 {

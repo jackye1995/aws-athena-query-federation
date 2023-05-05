@@ -36,6 +36,8 @@ import com.amazonaws.athena.connector.lambda.domain.spill.SpillLocation;
 import com.amazonaws.athena.connector.lambda.domain.spill.SpillLocationVerifier;
 import com.amazonaws.athena.connector.lambda.metadata.GetDataSourceCapabilitiesRequest;
 import com.amazonaws.athena.connector.lambda.metadata.GetDataSourceCapabilitiesResponse;
+import com.amazonaws.athena.connector.lambda.metadata.GetDataSourceConfigsRequest;
+import com.amazonaws.athena.connector.lambda.metadata.GetDataSourceConfigsResponse;
 import com.amazonaws.athena.connector.lambda.metadata.GetSplitsRequest;
 import com.amazonaws.athena.connector.lambda.metadata.GetSplitsResponse;
 import com.amazonaws.athena.connector.lambda.metadata.GetTableLayoutRequest;
@@ -299,6 +301,13 @@ public abstract class MetadataHandler
                     objectMapper.writeValue(outputStream, response);
                 }
                 return;
+            case GET_DATASOURCE_CONFIGS:
+                try (GetDataSourceConfigsResponse response = doGetDataSourceConfigs(allocator, (GetDataSourceConfigsRequest) req)) {
+                    logger.info("doHandleRequest: response[{}]", response);
+                    assertNotNull(response);
+                    objectMapper.writeValue(outputStream, response);
+                }
+                return;
             default:
                 throw new IllegalArgumentException("Unknown request type " + type);
         }
@@ -465,6 +474,11 @@ public abstract class MetadataHandler
     public GetDataSourceCapabilitiesResponse doGetDataSourceCapabilities(BlockAllocator allocator, GetDataSourceCapabilitiesRequest request)
     {
         return new GetDataSourceCapabilitiesResponse(request.getCatalogName(), Collections.emptyMap());
+    }
+
+    public GetDataSourceConfigsResponse doGetDataSourceConfigs(BlockAllocator allocator, GetDataSourceConfigsRequest request)
+    {
+        return new GetDataSourceConfigsResponse(request.getCatalogName(), Collections.emptyMap());
     }
 
     /**

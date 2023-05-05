@@ -52,7 +52,8 @@ public class FederationResponseSerDeV4
                 ReadRecordsResponseSerDe.Serializer readRecordsSerializer,
                 RemoteReadRecordsResponseSerDe.Serializer remoteReadRecordsSerializer,
                 UserDefinedFunctionResponseSerDe.Serializer userDefinedFunctionSerializer,
-                GetDataSourceCapabilitiesResponseSerDeV4.Serializer getDataSourceCapabilitiesSerializer)
+                GetDataSourceCapabilitiesResponseSerDeV4.Serializer getDataSourceCapabilitiesSerializer,
+                GetDataSourceConfigsResponseSerDeV4.Serializer getDataSourceConfigsSerializer)
         {
             super(FederationResponse.class, ImmutableSet.<TypedSerializer<FederationResponse>>builder()
                     .add(pingSerializer)
@@ -65,6 +66,7 @@ public class FederationResponseSerDeV4
                     .add(remoteReadRecordsSerializer)
                     .add(userDefinedFunctionSerializer)
                     .add(getDataSourceCapabilitiesSerializer)
+                    .add(getDataSourceConfigsSerializer)
                     .build());
         }
     }
@@ -81,7 +83,8 @@ public class FederationResponseSerDeV4
                 ReadRecordsResponseSerDe.Deserializer readRecordsDeserializer,
                 RemoteReadRecordsResponseSerDe.Deserializer remoteReadRecordsDeserializer,
                 UserDefinedFunctionResponseSerDe.Deserializer userDefinedFunctionDeserializer,
-                GetDataSourceCapabilitiesResponseSerDeV4.Deserializer getDataSourceCapabilitiesDeserializer)
+                GetDataSourceCapabilitiesResponseSerDeV4.Deserializer getDataSourceCapabilitiesDeserializer,
+                GetDataSourceConfigsResponseSerDeV4.Deserializer getDataSourceConfigsDeserializer)
         {
             super(FederationResponse.class, ImmutableSet.<TypedDeserializer<FederationResponse>>builder()
                     .add(pingDeserializer)
@@ -94,6 +97,7 @@ public class FederationResponseSerDeV4
                     .add(remoteReadRecordsDeserializer)
                     .add(userDefinedFunctionDeserializer)
                     .add(getDataSourceCapabilitiesDeserializer)
+                    .add(getDataSourceConfigsDeserializer)
                     .build());
         }
     }

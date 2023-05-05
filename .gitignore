@@ -14,3 +14,5 @@
 */packaged.yaml
 .DS_Store
 */.jqwik-database
+*.iml
+dependency-reduced-pom.xml

@@ -123,6 +123,7 @@
         <module>athena-msk</module>
         <module>athena-kafka</module>
         <module>athena-gcs</module>
+        <module>athena-iceberg</module>
     </modules>
     <dependencies>
         <dependency>
