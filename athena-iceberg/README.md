@@ -21,3 +21,84 @@ Then run:
 sam package --s3-bucket yzhaoqin-iceberg-eu-west-1 --region eu-west-1
 sam deploy --guided
 ```
+
+## Testing
+
+You can add the following testing events in Lambda:
+
+ListSchemas:
+
+```json
+{
+  "@type": "ListSchemasRequest",
+  "identity": {
+    "id": "xxx",
+    "principal": "xxx",
+    "account": "12345",
+    "arn": "xxx",
+    "tags": {},
+    "groups": []
+  },
+  "queryId": "xxx",
+  "catalogName": "athena_iceberg_rest"
+}
+```
+
+ListTables:
+
+```json
+{
+  "@type": "ListTablesRequest",
+  "identity": {
+    "id": "xxx",
+    "principal": "xxx",
+    "account": "12345",
+    "arn": "xxx",
+    "tags": {},
+    "groups": []
+  },
+  "queryId": "xxx",
+  "catalogName": "athena_iceberg_rest",
+  "schemaName": "examples"
+}
+```
+
+GetTable:
+
+```json
+{
+  "@type": "GetTableRequest",
+  "identity": {
+    "id": "xxx",
+    "principal": "xxx",
+    "account": "12345",
+    "arn": "xxx",
+    "tags": {},
+    "groups": []
+  },
+  "queryId": "xxx",
+  "catalogName": "athena_iceberg_rest",
+  "tableName": {
+      "schemaName": "examples",
+      "tableName": "nyc_taxi_yellow"
+  }
+}
+```
+
+GetDataSourceConfigs:
+
+```json
+{
+  "@type": "GetDataSourceConfigsRequest",
+  "identity": {
+    "id": "xxx",
+    "principal": "xxx",
+    "account": "12345",
+    "arn": "xxx",
+    "tags": {},
+    "groups": []
+  },
+  "queryId": "xxx",
+  "catalogName": "athena_iceberg_rest"
+}
+```
