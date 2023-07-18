@@ -10,7 +10,8 @@
     <version>2022.47.1</version>
     <properties>
         <dep.hadoop.version>2.7.3</dep.hadoop.version>
-        <dep.iceberg.version>1.2.1</dep.iceberg.version>
+        <dep.iceberg.version>1.3.0-rest-lambda</dep.iceberg.version>
+        <dep.awssdk.version>2.20.18</dep.awssdk.version>
     </properties>
     <dependencies>
         <dependency>
@@ -35,6 +36,21 @@
             <groupId>org.apache.iceberg</groupId>
             <artifactId>iceberg-core</artifactId>
             <version>${dep.iceberg.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.iceberg</groupId>
+            <artifactId>iceberg-aws</artifactId>
+            <version>${dep.iceberg.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>lambda</artifactId>
+            <version>${dep.awssdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>apache-client</artifactId>
+            <version>${dep.awssdk.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

@@ -39,9 +39,12 @@ import org.apache.arrow.vector.types.pojo.Schema;
 import org.apache.iceberg.CatalogProperties;
 import org.apache.iceberg.PartitionField;
 import org.apache.iceberg.Table;
+import org.apache.iceberg.aws.lambda.rest.LambdaRESTInvoker;
+import org.apache.iceberg.aws.lambda.rest.LambdaRESTInvokerProperties;
 import org.apache.iceberg.catalog.Namespace;
 import org.apache.iceberg.catalog.TableIdentifier;
 import org.apache.iceberg.rest.RESTCatalog;
+import org.apache.iceberg.rest.RESTClientProperties;
 import org.apache.iceberg.rest.auth.OAuth2Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +67,7 @@ public class IcebergRestMetadataHandler
     private static final String ICEBERG_REST_WAREHOUSE_ENV = "iceberg_rest_warehouse";
     private static final String ICEBERG_REST_CREDENTIAL_ENV = "iceberg_rest_credential";
     private static final String ICEBERG_REST_HEADERS_ENV = "iceberg_rest_headers";
+    private static final String ICEBERG_REST_LAMBDA_ARN_ENV = "iceberg_rest_lambda_arn";
 
     private static final Set<String> REDACTED_CONFIGS = Set.of(OAuth2Properties.CREDENTIAL, OAuth2Properties.TOKEN);
 
@@ -89,6 +93,10 @@ public class IcebergRestMetadataHandler
         configs.put(OAuth2Properties.CREDENTIAL, requireNonNull(
                 configOptions.get(ICEBERG_REST_CREDENTIAL_ENV),
                 ICEBERG_REST_CREDENTIAL_ENV + " must be set"));
+        if (configOptions.containsKey(ICEBERG_REST_LAMBDA_ARN_ENV)) {
+            configs.put(LambdaRESTInvokerProperties.FUNCTION_ARN, configOptions.get(ICEBERG_REST_LAMBDA_ARN_ENV));
+            configs.put(RESTClientProperties.REST_CLIENT_IMPL, LambdaRESTInvoker.class.getName());
+        }
 
         if (configOptions.containsKey(ICEBERG_REST_HEADERS_ENV)) {
             String[] parts = configOptions.get(ICEBERG_REST_HEADERS_ENV).split(",");
@@ -113,7 +121,6 @@ public class IcebergRestMetadataHandler
                         .collect(Collectors.toList()));
 
         restCatalog.initialize(CATALOG_NAME, configs);
-
     }
 
     @Override

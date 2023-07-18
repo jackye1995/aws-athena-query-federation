@@ -51,6 +51,9 @@ Parameters:
     Description: "Headers to be added to REST catalog, in format of key1=value1,key2=value2"
     Type: String
     Default: "header.x-tabular-s3-access=vended_credentials"
+  IcebergRestLambdaArn:
+    Description: "Headers to be added to REST catalog, in format of key1=value1,key2=value2"
+    Type: String
 
 Resources:
   S3Bucket:
@@ -85,17 +88,18 @@ Resources:
           iceberg_rest_warehouse: !Ref IcebergRestWarehouse
           iceberg_rest_credential: !Ref IcebergRestCredential
           iceberg_rest_headers: !Ref IcebergRestHeaders
-      FunctionName: IcebergRestMetadataHandler
+          iceberg_rest_lambda_arn: !Ref IcebergRestLambdaArn
+      FunctionName: "iceracer-athena-handler"
       Handler: "com.amazonaws.athena.connectors.iceberg.IcebergRestMetadataHandler"
       CodeUri: "./target/athena-iceberg-2022.47.1.jar"
       Description: "Connect to an Iceberg REST catalog to retrieve metadata"
       Runtime: java11
       Timeout: !Ref LambdaTimeout
       MemorySize: !Ref LambdaMemory
-      Policies: # example policy, not used
+      Policies:
         - Statement:
             - Action:
-                - athena:GetQueryExecution
+                - 'lambda:*'
               Effect: Allow
               Resource: '*'
           Version: '2012-10-17'
